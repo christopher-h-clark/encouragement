@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Encouragement</string>
+    <string name="button_text">Did it!</string>
+    <string name="configure_text">Settings…</string>
+    <string name="configure_interval">Encouragement interval:</string>
+    <string name="units_seconds">Seconds</string>
+    <string name="units_minutes">Minutes</string>
+</resources>
