@@ -5,4 +5,6 @@
     <string name="configure_interval">Encouragement interval:</string>
     <string name="units_seconds">Seconds</string>
     <string name="units_minutes">Minutes</string>
+    <string name="paused">Paused</string>
+    <string name="playing">Playing</string>
 </resources>

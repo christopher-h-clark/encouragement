@@ -1,14 +1,17 @@
 package com.example.encouragement;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 
 import java.util.Random;
 
@@ -20,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static MediaPlayer[] affirm = new MediaPlayer[4];
 //    private static MediaPlayer[] encourage = new MediaPlayer[3];
+
+    private PowerManager.WakeLock wakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,17 @@ public class MainActivity extends AppCompatActivity {
 //        encourage[1] = MediaPlayer.create(this, R.raw.next_step);
 //        encourage[2] = MediaPlayer.create(this, R.raw.youre_smart_you_can_do_it);
         initializeEncouragement();
+
+        // Get wake lock to keep screen on
+        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+        this.wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Encouragement");
+        this.wakeLock.acquire();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.wakeLock.release();
     }
 
     @Override
@@ -72,6 +88,22 @@ public class MainActivity extends AppCompatActivity {
         initializeEncouragement();
     }
 
+    public void playPauseEncouragements(View view) {
+        ImageButton encButton = (ImageButton)view;
+        String tag = (String)encButton.getTag();
+        String paused = getResources().getString(R.string.paused);
+        String playing = getResources().getString(R.string.playing);
+        if(tag.equals(paused)) {
+            encButton.setImageResource(android.R.drawable.ic_media_pause);
+            encButton.setTag(playing);
+            startEncouragement();
+        } else {
+            encButton.setImageResource(android.R.drawable.ic_media_play);
+            encButton.setTag(paused);
+            stopEncouragement();
+        }
+    }
+
     public void initializeEncouragement() {
         Intent intent = new Intent(EncouragementService.Init, null, this, EncouragementService.class);
         this.startService(intent);
@@ -96,5 +128,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(EncouragementService.Stop, null, this, EncouragementService.class);
         this.startService(intent);
 //        encourageHandler.removeCallbacks(encourageAction);
+    }
+
+    public void resetEncouragement() {
+        Intent intent = new Intent(EncouragementService.Reset, null, this, EncouragementService.class);
+        this.startService(intent);
     }
 }
