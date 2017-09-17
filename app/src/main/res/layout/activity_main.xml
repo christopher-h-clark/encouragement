@@ -17,12 +17,18 @@
         <!--tools:layout_editor_absoluteY="0dp"-->
         <!--tools:layout_editor_absoluteX="16dp" />-->
 
+    <!--
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+    -->
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
+        android:layout_width="250dp"
+        android:background="@drawable/round_button"
         android:onClick="playMessage"
         android:text="@string/button_text"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

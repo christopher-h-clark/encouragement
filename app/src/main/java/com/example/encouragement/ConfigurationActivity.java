@@ -6,6 +6,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.Locale;
+
 public class ConfigurationActivity extends AppCompatActivity {
 
     @Override
@@ -13,9 +15,10 @@ public class ConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        long sec = Configuration.getEncouragementInterval().getStandardSeconds();
+//        long sec = Configuration.getEncouragementInterval().getStandardSeconds();
+        int sec = Configuration.getEncouragementInterval();
         EditText encIntervalText = (EditText)findViewById(R.id.encIntervalText);
-        encIntervalText.setText(Long.toString(sec));
+        encIntervalText.setText(String.format(Locale.getDefault(), "%d", sec));
 
         encIntervalText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -30,7 +33,8 @@ public class ConfigurationActivity extends AppCompatActivity {
                 if(!text.isEmpty()) {
                     try {
                         int seconds = Integer.parseInt(text);
-                        Configuration.setEncouragementIntervalSeconds(seconds);
+//                        Configuration.setEncouragementIntervalSeconds(seconds);
+                        Configuration.setEncouragementInterval(seconds);
                     } catch(NumberFormatException ex) {
                         // Ignore
                     }
