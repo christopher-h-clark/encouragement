@@ -1,10 +1,13 @@
 package com.example.encouragement;
 
-//import android.content.Context;
+import android.content.Context;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 //import android.os.PowerManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -14,9 +17,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
 
     /** Executor to manage regular execution of encouragements */
     private ScheduledExecutorService encouragementExecutor;
+    private ScheduledFuture<?> encouragementHandler;
+
+    /** Receiver for configuration change notifications */
+    private BroadcastReceiver configChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(ActivityTag, "received configuration change notification");
+            stopEncouragement();
+            startEncouragement();
+        }
+    };
 
     /** Wake lock to prevent phone from going into sleep mode */
 //    private PowerManager.WakeLock wakeLock;
@@ -54,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         initializeEncouragement();
         Log.i(ActivityTag, "Loaded encouragement sounds");
 
+        // Register for configuration change notifications
+        LocalBroadcastManager.getInstance(this).registerReceiver(this.configChangeReceiver, new IntentFilter());
         // Get wake lock to keep screen on
 //        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
 //        this.wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Encouragement");
@@ -64,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopEncouragement();
 //        this.wakeLock.release();
     }
 
@@ -138,10 +157,14 @@ public class MainActivity extends AppCompatActivity {
             encourage[2] = MediaPlayer.create(this, R.raw.youre_smart_you_can_do_it);
         }
 
+        if(encouragementExecutor == null) {
+            Log.i(ActivityTag, "Instantiating encouragement executor");
+            this.encouragementExecutor = Executors.newScheduledThreadPool(2);
+        }
+
         Log.i(ActivityTag, "Starting encouragements");
         int interval = Configuration.getEncouragementInterval();
-        this.encouragementExecutor = Executors.newScheduledThreadPool(2);
-        this.encouragementExecutor.scheduleAtFixedRate(
+        this.encouragementHandler = this.encouragementExecutor.scheduleAtFixedRate(
                 new EncouragementTask(encourage), interval, interval, TimeUnit.SECONDS);
 //        Intent intent = new Intent(EncouragementService.Init, null, this, EncouragementService.class);
 //        this.startService(intent);
@@ -165,7 +188,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void stopEncouragement() {
-        encouragementExecutor.shutdownNow();
+        //encouragementExecutor.shutdownNow();
+        this.encouragementHandler.cancel(true);
 //        Intent intent = new Intent(EncouragementService.Stop, null, this, EncouragementService.class);
 //        this.startService(intent);
     }

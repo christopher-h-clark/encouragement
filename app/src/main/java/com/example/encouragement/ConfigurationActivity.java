@@ -1,5 +1,7 @@
 package com.example.encouragement;
 
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,8 +10,19 @@ import android.widget.EditText;
 
 import java.util.Locale;
 
+/**
+ * Configuration user interface back end
+ */
 public class ConfigurationActivity extends AppCompatActivity {
 
+    /** Tag placed in configuration notification intents */
+    public static final String ConfigChangeIntentTag = "config-changed";
+
+    /**
+     * Sets up behaviors when UI is created
+     *
+     * @param savedInstanceState Not used
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +48,19 @@ public class ConfigurationActivity extends AppCompatActivity {
                         int seconds = Integer.parseInt(text);
 //                        Configuration.setEncouragementIntervalSeconds(seconds);
                         Configuration.setEncouragementInterval(seconds);
+                        notifyConfigurationChange();
                     } catch(NumberFormatException ex) {
                         // Ignore
                     }
                 }
             }
         });
+    }
+
+    /**
+     * Broadcasts Intent when configuration changes
+     */
+    private void notifyConfigurationChange() {
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(ConfigChangeIntentTag));
     }
 }
