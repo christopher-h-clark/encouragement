@@ -1,6 +1,12 @@
 # Encouragement
 
-App designed to affirm and encourage my son to do his school work more efficiently.
+My son has trouble focusing on his school work. To address this problem, I took inspiration from an article I'd read about why certain applications, games, web sites, or experiences are addictive. To summarize, the gamification of certain activities where users get frequent micro-rewards triggers a dopamine release in the brain, which is a hormone that makes one feel good. Using this theory, we experimented with a Staples Easy Button and had good results. This app is, essentially, an Easy Button that can be played through headphones so it can be used in a classroom environment.
+
+It has two main features:
+* Plays an affirmation when the user presses the big "Did it!" button. It selects an affirmation sound at random from a set of three.
+* Plays an encouragement when the user hasn't pressed the "Did it!" in a configurable amount of time. It selects an encouragement sound at random from a set of four.
+
+Initial results were promising, but the affirmations don't seem to have quite the same effect that they used to. In addition, the encouragements seem more distracting than helpful.
 
 ## Playing Audio
 
@@ -12,7 +18,7 @@ App designed to affirm and encourage my son to do his school work more efficient
 
 [Timer(Task) = BAD! Do It The Android Way: Use a Handler](http://www.mopri.de/2010/timertask-bad-do-it-the-android-way-use-a-handler/) article about using Android handlers
 
-The [ScheduledExecutorService](https://developer.android.com/reference/java/util/concurrent/ScheduledExecutorService.html) seems to be the best way to handle the Encouragement timer in this app. An introduction to using it appears on [Stack Overflow](https://stackoverflow.com/questions/14376470/scheduling-recurring-task-in-android) with more detail in a [second post about problems](https://stackoverflow.com/questions/27872016/scheduledthreadpoolexecutor-for-a-periodic-task-using-retrofit-just-firing-onc).
+The [ScheduledExecutorService](https://developer.android.com/reference/java/util/concurrent/ScheduledExecutorService.html) seems to be the best way to handle the Encouragement timer in this app. An introduction to using it appears on [Stack Overflow](https://stackoverflow.com/questions/14376470/scheduling-recurring-task-in-android) with more detail in a [second post about problems](https://stackoverflow.com/questions/27872016/scheduledthreadpoolexecutor-for-a-periodic-task-using-retrofit-just-firing-onc). These discussions do not describe how to correctly turn off the periodic task. To do so, invoke the `cancel()` method on the `ScheduledFuture` returned from the `scheduleAtFixedRate()` method. It's shown in the example in the [ScheduledExecutorService](https://developer.android.com/reference/java/util/concurrent/ScheduledExecutorService.html) documentation, but not specifically mentioned otherwise.
 
 ## Menu
 
@@ -39,3 +45,7 @@ xxhdpi: 144x144
 xxxhdpi: 192x192
 
 Attribution for icon: [chris 論](https://commons.wikimedia.org/wiki/User:Chrkl)
+
+# Installation
+
+To install on a phone, generate a [signed APK file](https://www.udacity.com/wiki/ud853/course_resources/creating-a-signed-apk).
