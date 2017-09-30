@@ -37,48 +37,48 @@ public class EncouragementService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if(Init.equals(action)) {
-                handleInit();
-                handleStart();
-            } else if(Start.equals(action)) {
-                handleStart();
-            } else if (Stop.equals(action)) {
-                handleStop();
-            }
-        }
+//        if (intent != null) {
+//            final String action = intent.getAction();
+//            if(Init.equals(action)) {
+//                handleInit();
+//                handleStart();
+//            } else if(Start.equals(action)) {
+//                handleStart();
+//            } else if (Stop.equals(action)) {
+//                handleStop();
+//            }
+//        }
     }
 
     /**
      * Initializes the encouragement sounds
      */
-    private void handleInit() {
-        encourage[0] = MediaPlayer.create(this, R.raw.keep_going);
-        encourage[1] = MediaPlayer.create(this, R.raw.next_step);
-        encourage[2] = MediaPlayer.create(this, R.raw.youre_smart_you_can_do_it);
-    }
+//    private void handleInit() {
+//        encourage[0] = MediaPlayer.create(this, R.raw.keep_going);
+//        encourage[1] = MediaPlayer.create(this, R.raw.next_step);
+//        encourage[2] = MediaPlayer.create(this, R.raw.youre_smart_you_can_do_it);
+//    }
 
     /**
      * Starts the encouragement timer
      */
-    private void handleStart() {
-        final long encourageInterval = Configuration.getEncouragementInterval().getMillis();
-        encourageAction = new Runnable() {
-            @Override
-            public void run() {
-                int index = random.nextInt(encourage.length);
-                encourage[index].start();
-                encourageHandler.postDelayed(encourageAction, encourageInterval);
-            }
-        };
-        encourageHandler.postDelayed(encourageAction, encourageInterval);
-    }
+//    private void handleStart() {
+//        final long encourageInterval = Configuration.getEncouragementInterval().getMillis();
+//        encourageAction = new Runnable() {
+//            @Override
+//            public void run() {
+//                int index = random.nextInt(encourage.length);
+//                encourage[index].start();
+//                encourageHandler.postDelayed(encourageAction, encourageInterval);
+//            }
+//        };
+//        encourageHandler.postDelayed(encourageAction, encourageInterval);
+//    }
 
     /**
      * Stops the encouragements
      */
-    private void handleStop() {
-        encourageHandler.removeCallbacks(encourageAction);
-    }
+//    private void handleStop() {
+//        encourageHandler.removeCallbacks(encourageAction);
+//    }
 }

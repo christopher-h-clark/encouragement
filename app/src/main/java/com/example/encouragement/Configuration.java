@@ -8,21 +8,22 @@ import org.joda.time.Seconds;
  * Manages the configuration
  */
 public class Configuration {
-    private static Duration encouragementInterval = Seconds.seconds(20).toStandardDuration();
+    private static int encouragementInterval = 20;
+//    private static Duration encouragementInterval = Seconds.seconds(20).toStandardDuration();
 
-    public static Duration getEncouragementInterval() {
+    public static int getEncouragementInterval() {
         return encouragementInterval;
     }
 
-    public static void setEncouragementInterval(Duration interval) {
+    public static void setEncouragementInterval(int interval) {
         encouragementInterval = interval;
     }
 
-    public static void setEncouragementIntervalSeconds(int seconds) {
-        encouragementInterval = Seconds.seconds(seconds).toStandardDuration();
-    }
+//    public static void setEncouragementIntervalSeconds(int seconds) {
+//        encouragementInterval = Seconds.seconds(seconds).toStandardDuration();
+//    }
 
-    public static void setEncouragementIntervalMinutes(int minutes) {
-        encouragementInterval = Minutes.minutes(minutes).toStandardDuration();
-    }
+//    public static void setEncouragementIntervalMinutes(int minutes) {
+//        encouragementInterval = Minutes.minutes(minutes).toStandardDuration();
+//    }
 }
