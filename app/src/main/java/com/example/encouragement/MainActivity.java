@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 //import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,14 +19,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     /** Activity tag for log statements */
     private static final String ActivityTag = "MainActivity";
@@ -98,12 +101,18 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.action_config:
 //                stopEncouragement();
-                Intent intent = new Intent(this, ConfigurationActivity.class);
+//                Intent intent = new Intent(this, ConfigurationActivity.class);
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.i(ActivityTag, "Shared preference changed: " + key);
     }
 
     /**
@@ -163,34 +172,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.i(ActivityTag, "Starting encouragements");
-        int interval = Configuration.getEncouragementInterval();
-        this.encouragementHandler = this.encouragementExecutor.scheduleAtFixedRate(
-                new EncouragementTask(encourage), interval, interval, TimeUnit.SECONDS);
-//        Intent intent = new Intent(EncouragementService.Init, null, this, EncouragementService.class);
-//        this.startService(intent);
-
-//        final long encourageInterval = Configuration.getEncouragementInterval().getMillis();
-//        encourageAction = new Runnable() {
-//            @Override
-//            public void run() {
-//                int index = random.nextInt(encourage.length);
-//                encourage[index].start();
-//                encourageHandler.postDelayed(encourageAction, encourageInterval);
-//            }
-//        };
-//        encourageHandler.postDelayed(encourageAction, encourageInterval);
+//        int interval = Configuration.getEncouragementInterval();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean enabled = prefs.getBoolean("pref_encouragement_enabled", true);
+        String intervalText = prefs.getString("pref_encouragement_interval", "20");
+        int interval;
+        try {
+            interval = Integer.parseInt(intervalText);
+        } catch(Exception ex) {
+            Log.w(ActivityTag, "Invalid encouragement interval: using 20 seconds");
+            interval = 20;
+        }
+        Log.i(ActivityTag, "Loaded configuration: enabled = " + enabled + "; interval = " + intervalText + " (" + interval + ")");
+        if(enabled) {
+            this.encouragementHandler = this.encouragementExecutor.scheduleAtFixedRate(
+                    new EncouragementTask(encourage), interval, interval, TimeUnit.SECONDS);
+        }
     }
 
     public void startEncouragement() {
         initializeEncouragement();
-//        Intent intent = new Intent(EncouragementService.Start, null, this, EncouragementService.class);
-//        this.startService(intent);
     }
 
     public void stopEncouragement() {
-        //encouragementExecutor.shutdownNow();
-        this.encouragementHandler.cancel(true);
-//        Intent intent = new Intent(EncouragementService.Stop, null, this, EncouragementService.class);
-//        this.startService(intent);
+        if(this.encouragementHandler != null) {
+            this.encouragementHandler.cancel(true);
+        }
     }
 }
