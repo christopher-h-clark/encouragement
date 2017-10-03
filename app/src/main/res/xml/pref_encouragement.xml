@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="pref_encouragement_enabled"
+        android:title="@string/pref_encouragement_enabled_title"
+        android:summary="@string/pref_encouragement_enabled_summary"
+        android:defaultValue="true" />
+
+    <EditTextPreference
+        android:key="pref_encouragement_interval"
+        android:title="@string/pref_encouragement_interval_title"
+        android:defaultValue="@string/pref_encouragement_interval_default"
+        android:dialogTitle="@string/pref_encouragement_interval_title"
+        android:dialogMessage="@string/pref_encouragement_interval_dialog_message"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:digits="0123456789"
+        android:singleLine="true" />
+</PreferenceScreen>

@@ -7,4 +7,19 @@
     <string name="units_minutes">Minutes</string>
     <string name="paused">Paused</string>
     <string name="playing">Playing</string>
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_header_encouragement">Encouragements</string>
+    <string name="pref_encouragement_enabled_title">Play encouragements</string>
+    <string name="pref_encouragement_enabled_summary">
+        Enables or disables periodic encouragements at fixed intervals. May be
+        distracting for some students.
+    </string>
+    <string name="pref_encouragement_interval_title">Interval</string>
+    <string name="pref_encouragement_interval_dialog_message">
+        Fixed time between encouragement sounds, given in seconds.
+    </string>
+    <string name="pref_encouragement_interval_default">20</string>
+    <string name="pref_encouragement_interval_summary_format">%s seconds</string>
 </resources>
