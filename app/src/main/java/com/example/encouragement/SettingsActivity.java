@@ -31,8 +31,10 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
+    /** Activity tag for log statements */
     private static final String ActivityTag = "SettingsActivity";
 
+    /** Key for encouragement interval preference */
     private static final String EncouragementIntervalKey = "pref_encouragement_interval";
 
     /**

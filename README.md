@@ -6,19 +6,23 @@ It has two main features:
 * Plays an affirmation when the user presses the big "Did it!" button. It selects an affirmation sound at random from a set of three.
 * Plays an encouragement when the user hasn't pressed the "Did it!" in a configurable amount of time. It selects an encouragement sound at random from a set of four.
 
-Initial results were promising, but the affirmations don't seem to have quite the same effect that they used to. In addition, the encouragements seem more distracting than helpful.
+For more information, see the [wiki](https://github.com/christopher-h-clark/encouragement/wiki).
 
-## Playing Audio
+## Attributions
 
-[Stack Overflow question](http://stackoverflow.com/questions/18459122/play-sound-on-button-click-android) about playing audio
+Icon: [chris 論](https://commons.wikimedia.org/wiki/User:Chrkl). See also [SMirC-thumbsup](https://commons.wikimedia.org/wiki/File:SMirC-thumbsup.svg).
 
-. [Android-Audio](https://github.com/delight-im/Android-Audio) library for playing audio (not used in prototype)
+Also see [Credits](https://github.com/christopher-h-clark/encouragement/wiki/Credits)
 
-## Timer
+## Design
 
-[Timer(Task) = BAD! Do It The Android Way: Use a Handler](http://www.mopri.de/2010/timertask-bad-do-it-the-android-way-use-a-handler/) article about using Android handlers
+A detailed description of the design is available on [Design](https://github.com/christopher-h-clark/encouragement/wiki/Design).
 
-The [ScheduledExecutorService](https://developer.android.com/reference/java/util/concurrent/ScheduledExecutorService.html) seems to be the best way to handle the Encouragement timer in this app. An introduction to using it appears on [Stack Overflow](https://stackoverflow.com/questions/14376470/scheduling-recurring-task-in-android) with more detail in a [second post about problems](https://stackoverflow.com/questions/27872016/scheduledthreadpoolexecutor-for-a-periodic-task-using-retrofit-just-firing-onc). These discussions do not describe how to correctly turn off the periodic task. To do so, invoke the `cancel()` method on the `ScheduledFuture` returned from the `scheduleAtFixedRate()` method. It's shown in the example in the [ScheduledExecutorService](https://developer.android.com/reference/java/util/concurrent/ScheduledExecutorService.html) documentation, but not specifically mentioned otherwise.
+## Building and Installation
+
+The Encouragement app was built using Android Studio 2.3.1 and targets Android SDK version 25.
+
+
 
 ## Menu
 
@@ -32,10 +36,6 @@ The best way to handle the large round "Did it!" button is to create an XML draw
 
 When the configuration activity makes a change to the configuration, it needs to notify the main activity. The best way to do this is with a [LocalBroadcastManager](https://developer.android.com/reference/android/support/v4/content/LocalBroadcastManager.html). A description of the technique is available on [Stack Overflow](https://stackoverflow.com/questions/19026515/how-to-use-interface-to-communicate-between-two-activities).
 
-## Background Jobs
-
-[Best Practices for Background Jobs](https://developer.android.com/training/best-background.html): article about implementing Android background services
-
 # Icons
 
 mdpi: 48x48
@@ -43,8 +43,6 @@ hdpi: 72x72
 xhdpi: 96x96
 xxhdpi: 144x144
 xxxhdpi: 192x192
-
-Attribution for icon: [chris 論](https://commons.wikimedia.org/wiki/User:Chrkl)
 
 # Installation
 
